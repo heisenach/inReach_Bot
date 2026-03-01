@@ -1,0 +1,15 @@
+{
+  "dateIssued": "2026-03-01T00:00:00Z",
+  "dangerRatings": [
+    {
+      "alp": 4,
+      "tln": 3,
+      "btl": 3
+    },
+    {
+      "alp": 3,
+      "tln": 2,
+      "btl": 2
+    }
+  ]
+}

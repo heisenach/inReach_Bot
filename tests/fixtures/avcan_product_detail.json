@@ -1,0 +1,14 @@
+{
+  "id": "forecast-1",
+  "areas": [{"id": "123"}],
+  "dangerRatings": {
+    "alp": {"rating": "Considerable"},
+    "tln": {"rating": "Moderate"},
+    "btl": {"rating": "Low"}
+  },
+  "problems": [{"name": "Storm slab"}, {"name": "Wind slab"}],
+  "travel_advice": "Conservative terrain choices are essential.",
+  "validFrom": "2026-02-28T16:00:00Z",
+  "validUntil": "2026-03-01T16:00:00Z",
+  "url": "https://avalanche.ca/forecast"
+}

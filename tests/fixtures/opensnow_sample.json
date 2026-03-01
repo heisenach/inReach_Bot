@@ -1,0 +1,13 @@
+{
+  "daily": [
+    {
+      "headline": "Snow returns overnight",
+      "snow_total_cm": 18,
+      "temp_min_c": -12,
+      "temp_max_c": -4,
+      "wind_ridge_kmh": 35,
+      "freezing_level_m": 1300,
+      "confidence": "medium"
+    }
+  ]
+}

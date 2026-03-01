@@ -1,0 +1,19 @@
+{
+  "avcan_lat": "51.764",
+  "avcan_lon": "-117.88",
+  "avcan_region_mode": "region_name",
+  "avcan_region_value": "",
+  "end_date": "2026-03-07",
+  "gst_utc_offset": "UTC-07:00",
+  "mapshare_url": "https://your-mapshare-link",
+  "message_max_chars": 480,
+  "opensnow_auth_secret_name": "",
+  "opensnow_lat": null,
+  "opensnow_lon": null,
+  "opensnow_point_id": null,
+  "opensnow_target_mode": "coordinates",
+  "preview_only": true,
+  "send_time_gst": "20:00",
+  "send_tolerance_minutes": 20,
+  "start_date": "2026-03-01"
+}
