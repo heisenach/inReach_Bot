@@ -31,6 +31,10 @@ on:
         description: "MapShare link to receive message"
         required: true
         type: string
+      sender_contact:
+        description: "Your email or mobile phone (shown as sender on MapShare)"
+        required: true
+        type: string
       preview_only:
         description: "Keep send disabled until activate workflow"
         required: true
@@ -68,6 +72,7 @@ jobs:
             --latitude "${{ inputs.latitude }}" \
             --longitude "${{ inputs.longitude }}" \
             --mapshare-url "${{ inputs.mapshare_url }}" \
+            --sender-contact "${{ inputs.sender_contact }}" \
             --preview-only "${{ inputs.preview_only }}"
 
       - name: Commit trip state

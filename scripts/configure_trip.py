@@ -14,6 +14,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--latitude", required=True)
     parser.add_argument("--longitude", required=True)
     parser.add_argument("--mapshare-url", required=True)
+    parser.add_argument("--sender-contact", required=True, help="Email or phone number shown as sender on MapShare")
     parser.add_argument("--preview-only", default="true", choices=["true", "false"])
     parser.add_argument("--message-max-chars", default="160")
     return parser.parse_args()
@@ -30,6 +31,7 @@ def main() -> int:
         "latitude": args.latitude,
         "longitude": args.longitude,
         "mapshare_url": args.mapshare_url,
+        "sender_contact": args.sender_contact,
         "preview_only": args.preview_only == "true",
         "message_max_chars": int(args.message_max_chars),
     }

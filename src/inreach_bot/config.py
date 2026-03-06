@@ -56,6 +56,7 @@ def load_trip_config(path: Path = TRIP_CONFIG_PATH) -> TripConfig:
         latitude=_to_float(payload.get("latitude", payload.get("avcan_lat"))),
         longitude=_to_float(payload.get("longitude", payload.get("avcan_lon"))),
         mapshare_url=str(_require(payload.get("mapshare_url"), "mapshare_url")),
+        sender_contact=str(_require(payload.get("sender_contact"), "sender_contact")),
         preview_only=bool(payload.get("preview_only", True)),
         message_max_chars=int(payload.get("message_max_chars", 480)),
     )

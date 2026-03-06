@@ -31,7 +31,7 @@ def format_d_plus_1_numeric(avalanche: AvalancheSummary) -> str:
 def choose_outbound_messages(
     base: str, claude: str, max_chars: int, max_messages: int | None = None
 ) -> list[str]:
-    """Chunk base + claude into messages of max_chars each.
+    """Chunk base + claude into messages of max_chars each, breaking at word boundaries.
 
     Message 1: base + as much of claude as fits (joined with ' | ').
     Subsequent messages: remaining claude text, chunked to max_chars.
@@ -47,8 +47,9 @@ def choose_outbound_messages(
 
     budget = max_chars - len(base) - len(delimiter)
     if budget > 0:
-        messages = [f"{base}{delimiter}{claude[:budget]}"]
-        remainder = claude[budget:]
+        chunk = _word_chunk(claude, budget)
+        messages = [f"{base}{delimiter}{chunk}"]
+        remainder = claude[len(chunk):].lstrip()
     else:
         messages = [base[:max_chars]]
         remainder = claude
@@ -56,10 +57,19 @@ def choose_outbound_messages(
     while remainder:
         if max_messages is not None and len(messages) >= max_messages:
             break
-        messages.append(remainder[:max_chars])
-        remainder = remainder[max_chars:]
+        chunk = _word_chunk(remainder, max_chars)
+        messages.append(chunk)
+        remainder = remainder[len(chunk):].lstrip()
 
     return messages
+
+
+def _word_chunk(text: str, max_chars: int) -> str:
+    """Return up to max_chars of text, breaking at the last word boundary."""
+    if len(text) <= max_chars:
+        return text
+    cut = text.rfind(" ", 0, max_chars)
+    return text[:cut] if cut > 0 else text[:max_chars]
 
 
 def claude_summary_budget(base_message: str, max_chars: int, delimiter: str = " | ") -> int:

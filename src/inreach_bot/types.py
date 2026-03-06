@@ -14,6 +14,7 @@ class TripConfig:
     latitude: float | None
     longitude: float | None
     mapshare_url: str
+    sender_contact: str
     preview_only: bool = True
     message_max_chars: int = 160
 

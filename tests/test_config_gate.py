@@ -15,6 +15,7 @@ def base_config(**overrides):
         latitude=51.0,
         longitude=-117.0,
         mapshare_url="https://example.com",
+        sender_contact="test@example.com",
         preview_only=False,
     )
     for key, value in overrides.items():

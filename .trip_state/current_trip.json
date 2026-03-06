@@ -5,7 +5,8 @@
   "longitude": "-117.568",
   "mapshare_url": "https://share.garmin.com/SVO87",
   "message_max_chars": 160,
-  "preview_only": true,
+  "preview_only": false,
   "send_time_gst": "20:00",
+  "sender_contact": "helen@eisenach.org",
   "start_date": "2026-03-05"
 }

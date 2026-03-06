@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
-from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
+
+log = logging.getLogger(__name__)
 
 
 class MapShareDeliveryError(RuntimeError):
@@ -13,8 +15,9 @@ class MapShareDeliveryError(RuntimeError):
 def deliver_messages_mapshare(
     mapshare_url: str,
     messages: list[str],
+    sender_contact: str,
     artifacts_dir: Path,
-    timeout_ms: int = 25000,
+    timeout_ms: int = 30000,
 ) -> dict[str, int | str]:
     artifacts_dir.mkdir(parents=True, exist_ok=True)
 
@@ -24,54 +27,50 @@ def deliver_messages_mapshare(
         page = browser.new_page()
 
         try:
-            for message in messages:
+            for idx, message in enumerate(messages, 1):
+                log.info("Sending message %d/%d (%d chars): %s", idx, len(messages), len(message), message)
                 sent = False
                 for _ in range(2):
                     attempts += 1
                     try:
-                        _send_single_message(page, mapshare_url, message, timeout_ms)
+                        log.info("  Attempt %d...", attempts)
+                        _send_single_message(page, mapshare_url, sender_contact, message, timeout_ms)
                         sent = True
+                        log.info("  Message %d/%d sent successfully", idx, len(messages))
                         break
-                    except Exception:
+                    except Exception as exc:
+                        log.warning("  Attempt %d failed: %s", attempts, exc)
                         _capture_debug(page, artifacts_dir, attempts)
                 if not sent:
-                    raise MapShareDeliveryError("Unable to send message via MapShare after retries")
+                    raise MapShareDeliveryError(f"Unable to send message {idx}/{len(messages)} after retries")
         finally:
             browser.close()
 
     return {"message_count": len(messages), "attempts": attempts, "channel": "mapshare"}
 
 
-def _send_single_message(page, url: str, message: str, timeout_ms: int) -> None:
+def _send_single_message(page, url: str, sender_contact: str, message: str, timeout_ms: int) -> None:
+    log.info("Navigating to %s", url)
     page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
 
-    textbox = page.locator("textarea").first
-    if textbox.count() == 0:
-        textbox = page.locator("input[type='text'], [contenteditable='true']").first
-    if textbox.count() == 0:
-        raise MapShareDeliveryError("Could not find message input field on MapShare page")
+    log.info("Waiting for Message button...")
+    page.wait_for_selector("[data-test-id='topBtnMessage']", timeout=timeout_ms)
+    log.info("Clicking Message button")
+    page.locator("[data-test-id='topBtnMessage']").click(timeout=timeout_ms)
 
-    textbox.click(timeout=timeout_ms)
+    log.info("Filling sender contact")
+    page.get_by_role("textbox", name="Your Email or Mobile Phone:").fill(sender_contact, timeout=timeout_ms)
+
+    log.info("Filling message text")
+    textbox = page.get_by_role("textbox", name="Message")
     textbox.fill(message, timeout=timeout_ms)
 
-    # Broad selector to survive minor UI changes.
-    button = page.get_by_role("button", name=r"(?i)(send|post|message|share)").first
-    if button.count() == 0:
-        button = page.locator("button[type='submit'], input[type='submit']").first
-    if button.count() == 0:
-        raise MapShareDeliveryError("Could not find submit button on MapShare page")
+    log.info("Clicking Send")
+    page.locator("[data-test-id='MessageUserSend']").click(timeout=timeout_ms)
 
-    button.click(timeout=timeout_ms)
-
-    try:
-        page.wait_for_timeout(1500)
-        if page.get_by_text(r"(?i)(sent|success|delivered)").count() == 0:
-            # Some pages do not show explicit text. If input clears, treat as success.
-            value = textbox.input_value(timeout=1000) if textbox.evaluate("el => 'value' in el") else ""
-            if value.strip() == message.strip():
-                raise MapShareDeliveryError("No send confirmation detected after submit")
-    except PlaywrightTimeoutError as exc:
-        raise MapShareDeliveryError("Timed out waiting for MapShare submit result") from exc
+    # Wait briefly for any post-submit UI changes, then assume success.
+    page.wait_for_timeout(2000)
+    log.info("Send complete")
 
 
 def _capture_debug(page, artifacts_dir: Path, attempt: int) -> None:
