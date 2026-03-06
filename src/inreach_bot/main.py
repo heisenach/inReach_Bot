@@ -45,14 +45,12 @@ def main(argv: list[str] | None = None) -> int:
         _handle_error(f"Avalanche fetch failed: {exc}")
         return 3
 
-    # Avalanche-only mode for now. OpenSnow retrieval is intentionally skipped.
     weather_summary = WeatherSummary(
-        source="disabled",
-        source_status="skipped",
+        source="avcan",
+        source_status="ok",
         fetch_timestamp=avalanche_summary.fetch_timestamp,
-        headline="Weather retrieval skipped (avalanche-only mode)",
+        headline="Weather from AvCan forecast",
     )
-    opensnow_raw: dict = {"status": "skipped", "reason": "avalanche-only mode"}
 
     claude_summary = ""
     claude_error = None
@@ -82,7 +80,6 @@ def main(argv: list[str] | None = None) -> int:
     write_preview_artifacts(
         artifacts_dir,
         avalanche_raw=avalanche_raw,
-        opensnow_raw=opensnow_raw,
         avalanche_summary=avalanche_summary,
         weather_summary=weather_summary,
         claude_summary=claude_summary,

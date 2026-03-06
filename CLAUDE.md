@@ -6,7 +6,7 @@ Guidance for Claude Code when working in this repository.
 
 **inreach-bot** fetches Avalanche Canada forecasts and delivers compact safety messages to a Garmin inReach device via MapShare browser automation. It runs on GitHub Actions cron, is configurable via workflow inputs, and uses Claude AI to optionally enrich messages.
 
-Current mode: **avalanche-only** (OpenSnow fetch is intentionally skipped).
+Forecast source: **Avalanche Canada API** (lat/lon point lookup).
 
 ## Repository layout
 
@@ -17,8 +17,7 @@ src/inreach_bot/
 ├── types.py                   # Dataclasses: TripConfig, AvalancheSummary, WeatherSummary, SendDecision
 ├── providers/
 │   ├── avcan.py               # Avalanche Canada API (primary data source)
-│   ├── opensnow.py            # OpenSnow (disabled, code exists for future use)
-│   └── weather_fallback.py    # Open-Meteo fallback
+│   └── weather_fallback.py    # Open-Meteo fallback (unused in default path)
 ├── formatters/
 │   ├── message_builder.py     # D+1 "A/T/B" formatting, Claude summary appending
 │   └── verbose_dump.py        # Preview artifact serialization
@@ -54,7 +53,6 @@ Python >= 3.11 is required. Use `from __future__ import annotations` and `dateti
 |---|---|---|
 | `ANTHROPIC_API_KEY` | Yes (for summaries) | Never commit |
 | `ANTHROPIC_MODEL` | No | Defaults to `claude-haiku-4-5-20251001` |
-| `OPENSNOW_AUTH` | No | JSON blob; feature disabled |
 | `GITHUB_TOKEN` | No | Auto-set in Actions; for issue alerts |
 | `GITHUB_REPOSITORY` | No | Auto-set in Actions |
 | `GITHUB_STEP_SUMMARY` | No | Auto-set in Actions |
@@ -151,6 +149,5 @@ The scheduled workflow installs Playwright chromium. Do not remove that install 
 ## Things to watch out for
 
 - **`assert 0` in `main.py`**: may indicate in-progress debug state — check before running
-- **OpenSnow is disabled**: calls to `fetch_opensnow_summary()` are intentionally absent from the active path; do not re-enable without understanding the full flow
 - **MapShare selectors**: brittle by nature; regex-based fallback exists but may need tuning
 - **Message character budget**: inReach messages have a hard limit; always run through `choose_outbound_messages()` before delivery

@@ -13,13 +13,13 @@ class WeatherFallbackError(RuntimeError):
 
 
 def fetch_fallback_weather(config: TripConfig, session: requests.Session | None = None) -> tuple[WeatherSummary, dict[str, Any]]:
-    if config.opensnow_lat is None or config.opensnow_lon is None:
+    if config.latitude is None or config.longitude is None:
         raise WeatherFallbackError("Fallback weather requires coordinates")
 
     session = session or requests.Session()
     params = {
-        "latitude": config.opensnow_lat,
-        "longitude": config.opensnow_lon,
+        "latitude": config.latitude,
+        "longitude": config.longitude,
         "daily": "temperature_2m_min,temperature_2m_max,snowfall_sum,wind_speed_10m_max",
         "timezone": "UTC",
     }
@@ -39,7 +39,7 @@ def fetch_fallback_weather(config: TripConfig, session: requests.Session | None 
         temp_max_c=_pick_first_number(daily.get("temperature_2m_max"), scale=1.0),
         wind_ridge_kmh=_pick_first_number(daily.get("wind_speed_10m_max"), scale=1.0),
         freezing_level_m=None,
-        confidence_note="Fallback source due to OpenSnow error",
+        confidence_note="Fallback weather source",
         raw_excerpt=str(data)[:500],
         details={"keys": sorted(data.keys())},
     )

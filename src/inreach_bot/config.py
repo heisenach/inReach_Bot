@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import os
 import re
 from dataclasses import asdict
 from datetime import UTC, datetime, timedelta
@@ -49,9 +48,6 @@ def load_trip_config(path: Path = TRIP_CONFIG_PATH) -> TripConfig:
     gst_utc_offset = str(_require(payload.get("gst_utc_offset"), "gst_utc_offset"))
     _parse_offset(gst_utc_offset)
 
-    avcan_region_mode = str(payload.get("avcan_region_mode", "region_name"))
-    opensnow_target_mode = str(payload.get("opensnow_target_mode", "coordinates"))
-
     cfg = TripConfig(
         start_date=datetime.strptime(str(_require(payload.get("start_date"), "start_date")), "%Y-%m-%d").date(),
         end_date=datetime.strptime(str(_require(payload.get("end_date"), "end_date")), "%Y-%m-%d").date(),
@@ -59,14 +55,7 @@ def load_trip_config(path: Path = TRIP_CONFIG_PATH) -> TripConfig:
         gst_utc_offset=gst_utc_offset,
         latitude=_to_float(payload.get("latitude", payload.get("avcan_lat"))),
         longitude=_to_float(payload.get("longitude", payload.get("avcan_lon"))),
-        avcan_region_mode=avcan_region_mode,
-        avcan_region_value=str(payload.get("avcan_region_value", "")),
-        opensnow_target_mode=opensnow_target_mode,
-        opensnow_lat=_to_float(payload.get("opensnow_lat")),
-        opensnow_lon=_to_float(payload.get("opensnow_lon")),
-        opensnow_point_id=_to_str_or_none(payload.get("opensnow_point_id")),
         mapshare_url=str(_require(payload.get("mapshare_url"), "mapshare_url")),
-        opensnow_auth_secret_name=_to_str_or_none(payload.get("opensnow_auth_secret_name")),
         preview_only=bool(payload.get("preview_only", True)),
         message_max_chars=int(payload.get("message_max_chars", 480)),
         send_tolerance_minutes=int(payload.get("send_tolerance_minutes", 20)),
@@ -77,11 +66,6 @@ def load_trip_config(path: Path = TRIP_CONFIG_PATH) -> TripConfig:
 
     if cfg.latitude is None or cfg.longitude is None:
         raise ConfigError("latitude and longitude are required")
-
-    if cfg.opensnow_target_mode not in {"coordinates", "point_id"}:
-        raise ConfigError("opensnow_target_mode must be coordinates or point_id")
-
-    # OpenSnow fields are optional for avalanche-only operation.
 
     return cfg
 
@@ -140,21 +124,6 @@ def to_json_dict(config: TripConfig) -> dict[str, Any]:
     data["start_date"] = config.start_date.isoformat()
     data["end_date"] = config.end_date.isoformat()
     return data
-
-
-def load_opensnow_auth_from_env() -> dict[str, Any]:
-    raw = os.getenv("OPENSNOW_AUTH", "").strip()
-    if not raw:
-        raise ConfigError("OPENSNOW_AUTH is missing")
-
-    try:
-        payload = json.loads(raw)
-    except json.JSONDecodeError as exc:
-        raise ConfigError("OPENSNOW_AUTH must be valid JSON") from exc
-
-    if not isinstance(payload, dict):
-        raise ConfigError("OPENSNOW_AUTH must decode to a JSON object")
-    return payload
 
 
 def _to_float(value: Any) -> float | None:

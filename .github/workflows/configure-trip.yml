@@ -27,43 +27,9 @@ on:
         description: "Forecast lookup longitude"
         required: true
         type: string
-      avcan_region_mode:
-        description: "Avalanche region selector type"
-        required: false
-        type: choice
-        options:
-          - area_id
-          - region_name
-      avcan_region_value:
-        description: "Area id or region name"
-        required: false
-        type: string
-      opensnow_target_mode:
-        description: "OpenSnow selector type"
-        required: true
-        type: choice
-        options:
-          - coordinates
-          - point_id
-      opensnow_lat:
-        description: "Latitude (if coordinates mode)"
-        required: false
-        type: string
-      opensnow_lon:
-        description: "Longitude (if coordinates mode)"
-        required: false
-        type: string
-      opensnow_point_id:
-        description: "Point id (if point_id mode)"
-        required: false
-        type: string
       mapshare_url:
         description: "MapShare link to receive message"
         required: true
-        type: string
-      opensnow_auth_secret_name:
-        description: "Optional secret name containing OpenSnow auth JSON"
-        required: false
         type: string
       preview_only:
         description: "Keep send disabled until activate workflow"
@@ -101,14 +67,7 @@ jobs:
             --gst-utc-offset "${{ inputs.gst_utc_offset }}" \
             --latitude "${{ inputs.latitude }}" \
             --longitude "${{ inputs.longitude }}" \
-            --avcan-region-mode "${{ inputs.avcan_region_mode }}" \
-            --avcan-region-value "${{ inputs.avcan_region_value }}" \
-            --opensnow-target-mode "${{ inputs.opensnow_target_mode }}" \
-            --opensnow-lat "${{ inputs.opensnow_lat }}" \
-            --opensnow-lon "${{ inputs.opensnow_lon }}" \
-            --opensnow-point-id "${{ inputs.opensnow_point_id }}" \
             --mapshare-url "${{ inputs.mapshare_url }}" \
-            --opensnow-auth-secret-name "${{ inputs.opensnow_auth_secret_name }}" \
             --preview-only "${{ inputs.preview_only }}"
 
       - name: Commit trip state
@@ -128,6 +87,5 @@ jobs:
           {
             echo "## Trip configured"
             echo "- Preview only: ${{ inputs.preview_only }}"
-            echo "- Region: ${{ inputs.avcan_region_mode }} / ${{ inputs.avcan_region_value }}"
-            echo "- OpenSnow target: ${{ inputs.opensnow_target_mode }}"
+            echo "- Coordinates: ${{ inputs.latitude }}, ${{ inputs.longitude }}"
           } >> "$GITHUB_STEP_SUMMARY"

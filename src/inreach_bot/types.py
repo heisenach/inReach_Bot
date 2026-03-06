@@ -13,14 +13,7 @@ class TripConfig:
     gst_utc_offset: str
     latitude: float | None
     longitude: float | None
-    avcan_region_mode: str
-    avcan_region_value: str
-    opensnow_target_mode: str
-    opensnow_lat: float | None
-    opensnow_lon: float | None
-    opensnow_point_id: str | None
     mapshare_url: str
-    opensnow_auth_secret_name: str | None
     preview_only: bool = True
     message_max_chars: int = 160
     send_tolerance_minutes: int = 20

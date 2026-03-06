@@ -9,7 +9,7 @@ Automates Avalanche Canada forecast retrieval and sends compact messages to a Ga
 - Coordinates are required as general config: `latitude`/`longitude`.
 - `preview_only=true` is enforced first; preview artifacts are generated before live sends.
 - Scheduled workflow runs every 30 minutes and only sends when gate checks pass.
-- Current code path is avalanche-only (OpenSnow fetch is intentionally skipped).
+- Forecast source is Avalanche Canada API via lat/lon point lookup.
 - Outbound message is deterministic D+1 (`A/T/B`) plus optional Claude summary append.
 
 ## Required repository secrets

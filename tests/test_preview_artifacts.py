@@ -8,7 +8,7 @@ from inreach_bot.types import AvalancheSummary, WeatherSummary
 
 def test_write_preview_artifacts(tmp_path: Path):
     weather = WeatherSummary(
-        source="opensnow",
+        source="avcan",
         source_status="ok",
         fetch_timestamp="2026-02-28T00:00:00Z",
         headline="test",
@@ -28,13 +28,11 @@ def test_write_preview_artifacts(tmp_path: Path):
     paths = write_preview_artifacts(
         tmp_path,
         avalanche_raw={"a": 1},
-        opensnow_raw={"b": 2},
         avalanche_summary=avalanche,
         weather_summary=weather,
     )
 
     assert paths["avalanche_raw"].exists()
-    assert paths["opensnow_raw"].exists()
     assert paths["weather_verbose"].exists()
     assert paths["avalanche_verbose"].exists()
     assert paths["claude_summary"].exists()
