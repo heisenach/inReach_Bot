@@ -16,7 +16,6 @@ def base_config(**overrides):
         longitude=-117.0,
         mapshare_url="https://example.com",
         preview_only=False,
-        send_tolerance_minutes=20,
     )
     for key, value in overrides.items():
         setattr(cfg, key, value)

@@ -16,7 +16,6 @@ class TripConfig:
     mapshare_url: str
     preview_only: bool = True
     message_max_chars: int = 160
-    send_tolerance_minutes: int = 20
 
 
 @dataclass(slots=True)

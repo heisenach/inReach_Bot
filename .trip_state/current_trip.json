@@ -1,12 +1,11 @@
 {
-  "latitude": "51.294",
-  "longitude": "-117.568",
   "end_date": "2026-03-07",
   "gst_utc_offset": "UTC-07:00",
+  "latitude": "51.294",
+  "longitude": "-117.568",
   "mapshare_url": "https://share.garmin.com/SVO87",
   "message_max_chars": 160,
   "preview_only": true,
   "send_time_gst": "20:00",
-  "send_tolerance_minutes": 20,
   "start_date": "2026-03-05"
 }

@@ -58,7 +58,6 @@ def load_trip_config(path: Path = TRIP_CONFIG_PATH) -> TripConfig:
         mapshare_url=str(_require(payload.get("mapshare_url"), "mapshare_url")),
         preview_only=bool(payload.get("preview_only", True)),
         message_max_chars=int(payload.get("message_max_chars", 480)),
-        send_tolerance_minutes=int(payload.get("send_tolerance_minutes", 20)),
     )
 
     if cfg.start_date > cfg.end_date:
@@ -89,7 +88,7 @@ def build_send_decision(config: TripConfig, now_utc: datetime | None = None) -> 
     target = local_now.replace(hour=target_hour, minute=target_minute, second=0, microsecond=0)
     delta_min = abs((local_now - target).total_seconds()) / 60.0
 
-    if delta_min > config.send_tolerance_minutes:
+    if delta_min > 20:
         return SendDecision(False, "outside send tolerance window", key)
 
     already_sent = load_last_sent_key()

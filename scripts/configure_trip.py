@@ -16,7 +16,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--mapshare-url", required=True)
     parser.add_argument("--preview-only", default="true", choices=["true", "false"])
     parser.add_argument("--message-max-chars", default="160")
-    parser.add_argument("--send-tolerance-minutes", default="20")
     return parser.parse_args()
 
 
@@ -33,7 +32,6 @@ def main() -> int:
         "mapshare_url": args.mapshare_url,
         "preview_only": args.preview_only == "true",
         "message_max_chars": int(args.message_max_chars),
-        "send_tolerance_minutes": int(args.send_tolerance_minutes),
     }
 
     write_trip_config(payload)
