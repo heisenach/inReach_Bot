@@ -10,26 +10,14 @@ Automates Avalanche Canada forecast retrieval and sends compact messages to a Ga
 - `preview_only=true` is enforced first; preview artifacts are generated before live sends.
 - Scheduled workflow runs every 30 minutes and only sends when gate checks pass.
 - Current code path is avalanche-only (OpenSnow fetch is intentionally skipped).
+- Outbound message is deterministic D+1 (`A/T/B`) plus optional Claude summary append.
 
-## Required repository secret
+## Required repository secrets
 
-Create at least one secret that contains OpenSnow auth JSON. Example value:
+1. `ANTHROPIC_API_KEY` for Claude summarization.
+2. Optional repo variable `ANTHROPIC_MODEL` (defaults to `claude-haiku-4-5-20251001`).
 
-```json
-{
-  "base_url": "https://api.opensnow.com",
-  "coordinates_path": "/v1/forecast/point",
-  "point_path": "/v1/forecast/point/{point_id}",
-  "headers": {
-    "User-Agent": "inreach-bot/0.1"
-  },
-  "cookies": {
-    "session": "..."
-  }
-}
-```
-
-Then pass the secret name in `opensnow_auth_secret_name` when running `Configure Trip`.
+Do not store API keys in code or tracked files.
 
 ## Workflows
 
@@ -42,7 +30,8 @@ Then pass the secret name in `opensnow_auth_secret_name` when running `Configure
 
 ```bash
 python -m pip install -e .[dev]
-export OPENSNOW_AUTH='{"base_url":"https://api.opensnow.com","headers":{},"cookies":{}}'
+export ANTHROPIC_API_KEY="sk-ant-..."
+export ANTHROPIC_MODEL="claude-haiku-4-5-20251001"  # optional
 python -m inreach_bot.main --mode preview
 python -m inreach_bot.main --mode send --skip-gate
 pytest -q
@@ -51,5 +40,5 @@ pytest -q
 ## Notes
 
 - MapShare forms can change over time; Playwright selector updates may be needed.
-- If OpenSnow fetch fails, fallback weather (`open-meteo`) is used when coordinates are available.
+- If Claude summary fails, outbound falls back to deterministic D+1 message only.
 - If Avalanche Canada fetch fails, sending is aborted and an alert issue is raised.

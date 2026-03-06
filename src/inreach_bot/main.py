@@ -15,9 +15,10 @@ from .config import (
     persist_last_sent_key,
 )
 from .delivery.mapshare_playwright import deliver_messages_mapshare
-from .formatters.message_builder import MessageBundle, build_avalanche_only_message, choose_outbound_messages
+from .formatters.message_builder import build_base_message
 from .formatters.verbose_dump import write_preview_artifacts
-from .providers.avcan import fetch_avalanche_summary
+from .llm.claude_summary import ClaudeSummaryError, summarize_report_with_claude
+from .providers.avcan import extract_claude_text_payload, fetch_avalanche_summary
 from .types import WeatherSummary
 
 
@@ -53,6 +54,30 @@ def main(argv: list[str] | None = None) -> int:
     )
     opensnow_raw: dict = {"status": "skipped", "reason": "avalanche-only mode"}
 
+    claude_summary = ""
+    claude_error = None
+
+    base_message = build_base_message(avalanche_summary)
+
+    report_payload = (
+        avalanche_raw.get("point", {}).get("report", {})
+        if isinstance(avalanche_raw, dict)
+        else {}
+    )
+    if not isinstance(report_payload, dict):
+        report_payload = {}
+
+    # Total budget for Claude: up to 10 messages minus the base message and delimiter
+    total_budget = 10 * config.message_max_chars - len(base_message) - len(" | ")
+    if total_budget > 0 and report_payload:
+        text_payload = extract_claude_text_payload(report_payload)
+        if text_payload:
+            try:
+                claude_summary = summarize_report_with_claude(text_payload, total_budget)
+            except ClaudeSummaryError as exc:
+                claude_error = str(exc)
+                _warn(f"Claude summary unavailable; using deterministic base only: {exc}", send_alert=True)
+
     artifacts_dir = Path(args.artifacts_dir)
     write_preview_artifacts(
         artifacts_dir,
@@ -60,14 +85,25 @@ def main(argv: list[str] | None = None) -> int:
         opensnow_raw=opensnow_raw,
         avalanche_summary=avalanche_summary,
         weather_summary=weather_summary,
+        claude_summary=claude_summary,
+        claude_error=claude_error,
     )
 
+    outbound_message = f"{base_message} | {claude_summary}" if claude_summary else base_message
+
     if args.mode == "preview":
+        print(f"\n{'='*60}")
+        print(f"OUTBOUND MESSAGE ({len(outbound_message)} chars)")
+        print("="*60)
+        print(f"\n{outbound_message}")
+        print(f"\n{'='*60}\n")
         _append_step_summary(
             "Preview complete",
             {
-                "avalanche_region": avalanche_summary.region_name,
+                "base_message": base_message,
                 "weather_source": "skipped",
+                "claude_used": str(bool(claude_summary)),
+                "claude_error": claude_error or "",
                 "preview_only": str(config.preview_only),
                 "artifacts_dir": str(artifacts_dir.resolve()),
             },
@@ -79,19 +115,8 @@ def main(argv: list[str] | None = None) -> int:
         _append_step_summary("Send skipped", {"reason": decision.reason, "idempotency_key": decision.idempotency_key})
         return 0
 
-    avalanche_message = build_avalanche_only_message(avalanche_summary)
-    outbound = choose_outbound_messages(
-        bundle=MessageBundle(
-            combined=avalanche_message,
-            weather_only=avalanche_message,
-            avalanche_only=avalanche_message,
-        ),
-        max_chars=config.message_max_chars,
-    )
-    outbound = [outbound[0]]
-
     try:
-        result = deliver_messages_mapshare(config.mapshare_url, outbound, artifacts_dir / "delivery")
+        result = deliver_messages_mapshare(config.mapshare_url, [outbound_message], artifacts_dir / "delivery")
     except Exception as exc:
         _handle_error(f"MapShare delivery failed: {exc}")
         return 4
@@ -109,6 +134,7 @@ def main(argv: list[str] | None = None) -> int:
     print(json.dumps({"status": "ok", "result": result, "decision": asdict(decision)}, indent=2))
     return 0
 
+
 def _append_step_summary(title: str, kv: dict[str, str]) -> None:
     summary_path = os.getenv("GITHUB_STEP_SUMMARY")
     if not summary_path:
@@ -122,6 +148,16 @@ def _append_step_summary(title: str, kv: dict[str, str]) -> None:
 
 def _handle_error(message: str) -> None:
     print(message, file=sys.stderr)
+    try:
+        post_or_update_alert(message)
+    except Exception:
+        pass
+
+
+def _warn(message: str, send_alert: bool = False) -> None:
+    print(message, file=sys.stderr)
+    if not send_alert:
+        return
     try:
         post_or_update_alert(message)
     except Exception:

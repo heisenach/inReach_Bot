@@ -16,11 +16,14 @@ src/inreach_bot/delivery/mapshare_playwright.py
 src/inreach_bot/formatters/__init__.py
 src/inreach_bot/formatters/message_builder.py
 src/inreach_bot/formatters/verbose_dump.py
+src/inreach_bot/llm/__init__.py
+src/inreach_bot/llm/claude_summary.py
 src/inreach_bot/providers/__init__.py
 src/inreach_bot/providers/avcan.py
 src/inreach_bot/providers/opensnow.py
 src/inreach_bot/providers/weather_fallback.py
 tests/test_avcan_provider.py
+tests/test_claude_summary.py
 tests/test_config_gate.py
 tests/test_message_builder.py
 tests/test_opensnow_provider.py

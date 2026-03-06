@@ -92,7 +92,9 @@ def build_send_decision(config: TripConfig, now_utc: datetime | None = None) -> 
     local_now = now_utc + offset
 
     today_local = local_now.date()
-    key = f"{today_local.isoformat()}::{config.avcan_region_value}"
+    lat = f"{config.latitude:.4f}" if config.latitude is not None else "na"
+    lon = f"{config.longitude:.4f}" if config.longitude is not None else "na"
+    key = f"{today_local.isoformat()}::{lat},{lon}"
 
     if config.preview_only:
         return SendDecision(False, "preview_only=true", key)

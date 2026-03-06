@@ -1,0 +1,474 @@
+{
+  "point": {
+    "id": "482c876c-bcea-4350-a471-b2c3c24eaea2_b2a14eb464567902bcdf5b0cf1efe870416fee4de1d80d5b1f6d9cbc1b3bd73a",
+    "slug": "482c876c-bcea-4350-a471-b2c3c24eaea2_b2a14eb464567902bcdf5b0cf1efe870416fee4de1d80d5b1f6d9cbc1b3bd73a",
+    "url": "https://avalanche.ca/forecasts/482c876c-bcea-4350-a471-b2c3c24eaea2_b2a14eb464567902bcdf5b0cf1efe870416fee4de1d80d5b1f6d9cbc1b3bd73a",
+    "type": "avalancheforecast",
+    "area": {
+      "id": "b2a14eb464567902bcdf5b0cf1efe870416fee4de1d80d5b1f6d9cbc1b3bd73a",
+      "name": "b2a14eb464567902bcdf5b0cf1efe870416fee4de1d80d5b1f6d9cbc1b3bd73a",
+      "bbox": null
+    },
+    "report": {
+      "id": "482c876c-bcea-4350-a471-b2c3c24eaea2_b2a14eb464567902bcdf5b0cf1efe870416fee4de1d80d5b1f6d9cbc1b3bd73a",
+      "forecaster": "Parks Canada",
+      "dateIssued": "2026-03-05T00:00:00Z",
+      "validUntil": "2026-03-06T00:00:00Z",
+      "timezone": "America/Vancouver",
+      "title": "Glacier",
+      "highlights": "<p>The January 26th Surface Hoar layer woke up last week, producing very large avalanches throughout Rogers Pass.</p><p>Slopes that have not yet failed will be ripe for human triggering and should be absolutely avoided!</p><p>With continued incremental loading the next few days, manage exposure to overhead avalanche terrain with extra caution.</p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>",
+      "confidence": {
+        "rating": {
+          "value": "moderate",
+          "display": "Moderate"
+        },
+        "statements": [
+          "We are uncertain due to how buried persistent weak layers will react with the forecast weather.",
+          "We are confident that there are deep persistent slabs in the snowpack, but uncertain about how likely they are to trigger."
+        ]
+      },
+      "summaries": [
+        {
+          "type": {
+            "value": "avalanche-summary",
+            "display": "Avalanche Summary"
+          },
+          "content": " <p>We saw 3 fresh size 1 natural avalanches on a treeline East aspect on Wednesday, ~100cm deep, on the Jan 26th layer.</p><p>Explosive tests at Fidelity Tues. produced a size 3 avalanche on the Jan 26 surface hoar, which remoted a second size 3 slab 50m away.</p><p>Last Friday's cycle saw natural and explosive triggered avalanches up to size 4, running to valley bottom. The carnage of downed timber and debris littering Connaught and Asulkan is sobering.</p><p>See the following link to a recent <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://mountainconditions.ca/reports/multiple-climax-avalanche-events\">MCR</a>.</p>"
+        },
+        {
+          "type": {
+            "value": "snowpack-summary",
+            "display": "Snowpack Summary"
+          },
+          "content": " <p>15-20cm of new snow covers thick wind slabs on leeward features (from previous Extreme S'ly winds), and a suncrust on solar aspects (SE through W).</p><p>The Feb 9 surface hoar (SH) is down 90-120 cm and remains reactive in snowpack testing. The Feb 9 SH sits over a crust on solar aspects.</p><p>The Jan 26th layer is buried down 130-160 cm, and is composed of very large surface hoar (up to 40mm), facets, and/or a crust, The largest surface hoar is preserved in sheltered areas below treeline.</p>"
+        },
+        {
+          "type": {
+            "value": "weather-summary",
+            "display": "Weather Summary"
+          },
+          "content": " <p>Snow flurries and gusty winds will be the story at Rogers Pass the next few days.</p><p><strong>Tonight </strong>Isolated Flurries. Alpine Low -6<strong>\u00b0</strong>C. Freezing level (FZL) 1300m. Light West ridgetop wind.</p><p><strong>Thurs</strong> Sunny periods. Alpine High -5\u00b0C. FZL 1500m. Gusty moderate W winds.</p><p><strong>Fri</strong> Isolated Flurries. Low -9 \u00b0C, High -7 \u00b0C. FZL 1400m. Light SW wind.</p><p><strong>Sat </strong>Snow, 10-15cm. Low -5 \u00b0C, High -2 \u00b0C. FZL 1700m. Moderate SW wind.</p>"
+        }
+      ],
+      "dangerRatings": [
+        {
+          "date": {
+            "value": "2026-03-06T00:00:00Z",
+            "display": "Thursday"
+          },
+          "ratings": {
+            "alp": {
+              "display": "Alpine",
+              "rating": {
+                "value": "considerable",
+                "display": "3 - Considerable"
+              }
+            },
+            "tln": {
+              "display": "Treeline",
+              "rating": {
+                "value": "considerable",
+                "display": "3 - Considerable"
+              }
+            },
+            "btl": {
+              "display": "Below Treeline",
+              "rating": {
+                "value": "considerable",
+                "display": "3 - Considerable"
+              }
+            }
+          }
+        },
+        {
+          "date": {
+            "value": "2026-03-07T00:00:00Z",
+            "display": "Friday"
+          },
+          "ratings": {
+            "alp": {
+              "display": "Alpine",
+              "rating": {
+                "value": "considerable",
+                "display": "3 - Considerable"
+              }
+            },
+            "tln": {
+              "display": "Treeline",
+              "rating": {
+                "value": "considerable",
+                "display": "3 - Considerable"
+              }
+            },
+            "btl": {
+              "display": "Below Treeline",
+              "rating": {
+                "value": "considerable",
+                "display": "3 - Considerable"
+              }
+            }
+          }
+        },
+        {
+          "date": {
+            "value": "2026-03-08T00:00:00Z",
+            "display": "Saturday"
+          },
+          "ratings": {
+            "alp": {
+              "display": "Alpine",
+              "rating": {
+                "value": "considerable",
+                "display": "3 - Considerable"
+              }
+            },
+            "tln": {
+              "display": "Treeline",
+              "rating": {
+                "value": "considerable",
+                "display": "3 - Considerable"
+              }
+            },
+            "btl": {
+              "display": "Below Treeline",
+              "rating": {
+                "value": "considerable",
+                "display": "3 - Considerable"
+              }
+            }
+          }
+        }
+      ],
+      "problems": [
+        {
+          "type": {
+            "value": "persistentslab",
+            "display": "Persistent slab"
+          },
+          "comment": "<p>Two persistent weak layers are buried down ~100 and ~130 cm. Last weeks snow, combined with extreme winds, overloaded these layers triggering large, destructive avalanches. Be very suspect of slopes that haven't recently avalanched. These weak layers are still within human triggering depths.</p><p></p>",
+          "factors": [
+            {
+              "type": {
+                "value": "elevation",
+                "display": "What Elevation?"
+              },
+              "graphic": {
+                "id": "elevation-1-1-1_en",
+                "url": "https://assets.avalanche.ca/images/Elevation/Elevation-1-1-1_EN.png",
+                "alt": " Below treeline, Treeline, Alpine"
+              }
+            },
+            {
+              "type": {
+                "value": "aspect",
+                "display": "Which Slopes?"
+              },
+              "graphic": {
+                "id": "aspect-1-1-1-1-1-1-1-1_en",
+                "url": "https://assets.avalanche.ca/images/Compass/compass-1-1-1-1-1-1-1-1_EN.png",
+                "alt": " North, Northeast, East, Southeast, south, Southwest, West, Northwest"
+              }
+            },
+            {
+              "type": {
+                "value": "likelihood",
+                "display": "Chances of Avalanches?"
+              },
+              "graphic": {
+                "id": "likelihood-possible_en",
+                "url": "https://assets.avalanche.ca/images/Likelihood/Likelihood-3_EN.png",
+                "alt": " Possible"
+              }
+            },
+            {
+              "type": {
+                "value": "size",
+                "display": "Expected Size?"
+              },
+              "graphic": {
+                "id": "size-2-7_en",
+                "url": "https://assets.avalanche.ca/images/size/Size-2-7_EN.png",
+                "alt": " Small - Very large"
+              }
+            }
+          ],
+          "data": {
+            "elevations": [
+              {
+                "value": "alp",
+                "display": "Alpine"
+              },
+              {
+                "value": "tln",
+                "display": "Treeline"
+              },
+              {
+                "value": "btl",
+                "display": "Below Treeline"
+              }
+            ],
+            "aspects": [
+              {
+                "value": "nw",
+                "display": "Northwest"
+              },
+              {
+                "value": "se",
+                "display": "Southeast"
+              },
+              {
+                "value": "sw",
+                "display": "Southwest"
+              },
+              {
+                "value": "n",
+                "display": "North"
+              },
+              {
+                "value": "ne",
+                "display": "Northeast"
+              },
+              {
+                "value": "e",
+                "display": "East"
+              },
+              {
+                "value": "w",
+                "display": "West"
+              },
+              {
+                "value": "s",
+                "display": "s"
+              }
+            ],
+            "aspectElevations": [
+              "nw_tln",
+              "n_tln",
+              "ne_tln",
+              "e_tln",
+              "nw_btl",
+              "n_btl",
+              "ne_btl",
+              "e_btl",
+              "se_btl",
+              "w_btl",
+              "sw_btl",
+              "s_btl",
+              "nw_alp",
+              "n_alp",
+              "ne_alp",
+              "e_alp",
+              "w_tln",
+              "sw_tln",
+              "s_tln",
+              "se_tln",
+              "se_alp",
+              "s_alp",
+              "sw_alp",
+              "w_alp"
+            ],
+            "likelihood": {
+              "value": "possible",
+              "display": "possible"
+            },
+            "expectedSize": {
+              "min": "1.5",
+              "max": "4.0"
+            }
+          }
+        },
+        {
+          "type": {
+            "value": "stormslab",
+            "display": "Storm slab"
+          },
+          "comment": "<p>Up to 30 cm of new snow accompanied by warm temps and light-moderate Southerly winds has created fresh storm slabs in open terrain.</p>",
+          "factors": [
+            {
+              "type": {
+                "value": "elevation",
+                "display": "What Elevation?"
+              },
+              "graphic": {
+                "id": "elevation-0-1-1_en",
+                "url": "https://assets.avalanche.ca/images/Elevation/Elevation-0-1-1_EN.png",
+                "alt": " Treeline, Alpine"
+              }
+            },
+            {
+              "type": {
+                "value": "aspect",
+                "display": "Which Slopes?"
+              },
+              "graphic": {
+                "id": "aspect-1-1-1-1-1-1-1-1_en",
+                "url": "https://assets.avalanche.ca/images/Compass/compass-1-1-1-1-1-1-1-1_EN.png",
+                "alt": " North, Northeast, East, Southeast, south, Southwest, West, Northwest"
+              }
+            },
+            {
+              "type": {
+                "value": "likelihood",
+                "display": "Chances of Avalanches?"
+              },
+              "graphic": {
+                "id": "likelihood-possible_en",
+                "url": "https://assets.avalanche.ca/images/Likelihood/Likelihood-3_EN.png",
+                "alt": " Possible"
+              }
+            },
+            {
+              "type": {
+                "value": "size",
+                "display": "Expected Size?"
+              },
+              "graphic": {
+                "id": "size-1-4_en",
+                "url": "https://assets.avalanche.ca/images/size/Size-1-4_EN.png",
+                "alt": " Small - Large"
+              }
+            }
+          ],
+          "data": {
+            "elevations": [
+              {
+                "value": "alp",
+                "display": "Alpine"
+              },
+              {
+                "value": "tln",
+                "display": "Treeline"
+              }
+            ],
+            "aspects": [
+              {
+                "value": "e",
+                "display": "East"
+              },
+              {
+                "value": "s",
+                "display": "s"
+              },
+              {
+                "value": "se",
+                "display": "Southeast"
+              },
+              {
+                "value": "w",
+                "display": "West"
+              },
+              {
+                "value": "sw",
+                "display": "Southwest"
+              },
+              {
+                "value": "n",
+                "display": "North"
+              },
+              {
+                "value": "ne",
+                "display": "Northeast"
+              },
+              {
+                "value": "nw",
+                "display": "Northwest"
+              }
+            ],
+            "aspectElevations": [
+              "e_alp",
+              "s_alp",
+              "s_tln",
+              "se_tln",
+              "se_alp",
+              "nw_alp",
+              "nw_tln",
+              "w_tln",
+              "w_alp",
+              "sw_alp",
+              "sw_tln",
+              "n_alp",
+              "n_tln",
+              "ne_tln",
+              "ne_alp",
+              "e_tln"
+            ],
+            "likelihood": {
+              "value": "possible",
+              "display": "possible"
+            },
+            "expectedSize": {
+              "min": "1.0",
+              "max": "2.5"
+            }
+          }
+        }
+      ],
+      "terrainAndTravelAdvice": [
+        "Shooting cracks, whumpfs, and recent avalanches are strong indicators of an unstable snowpack.",
+        "This avalanche problem is difficult to trigger, but would have serious consequences.",
+        "Storm slabs in motion may step down to deeper layers resulting in large avalanches."
+      ],
+      "message": null,
+      "season": null,
+      "comment": null,
+      "isFullTranslation": true
+    },
+    "version": 1,
+    "owner": {
+      "value": "parks-glacier",
+      "display": "Parks Canada",
+      "isExternal": false,
+      "url": "Parks Canada"
+    },
+    "notifications": [
+      {
+        "type": "info",
+        "content": "<p>Large areas of Glacier National Park are CLOSED for avalanche control using EXPLOSIVES. <a href=\"https://www.pc.gc.ca/apps/Rogers-Pass\">Real Time Area Status</a> - <a href=\"https://www.pc.gc.ca/en/pn-np/bc/glacier/visit/hiver-winter/ski\">Winter Permit Information</a></p>"
+      }
+    ],
+    "media": {
+      "images": [
+        {
+          "id": "c503b3f3-5b5e-408a-a595-59bdc2241be4",
+          "url": "http://res.cloudinary.com/forecasts/image/upload/v1772580611/prod/parks/glacier/yr9ed5qrpe83fjcgvjiy.jpg",
+          "width": 2142,
+          "height": 2856,
+          "credit": "Parks Canada",
+          "caption": "<p>Size 3 avalanche that propagated on the Jan 26th surface hoar layer, down 100-150cm. This one in the photo was naturally triggered 24-48 hours ago. Explosive hand charge testing 200m away triggered two sz 3 avalanches, both on the Jan 26 surface hoar. One of these was remote triggered from 50m away.</p>",
+          "tag": "avalanche",
+          "isArchived": false,
+          "altText": "Parks Canada Mountain Safety staff examining fracture line of sz 3 avalanche on Roundhill Ridge",
+          "dateTaken": "2026-03-03T23:30:17.835Z"
+        },
+        {
+          "id": "774f8df4-2d4d-490c-9dd2-d95fe2c5dc8a",
+          "url": "http://res.cloudinary.com/forecasts/image/upload/v1772580889/prod/parks/glacier/djmhtuc270kl0bwtn15b.jpg",
+          "width": 2856,
+          "height": 2142,
+          "credit": "Parks Canada",
+          "caption": "<p>These large blocks of avalanche debris are on slopes less than 20 degrees. This size 3 avalanche was naturally triggered in the last 24-48hrs on a N-facing slope, pulling well-back onto low angle slopes in the Mt Fidelity prohibited zone. The failure plane is the Jan 26th surface hoar, down 1-1.5m</p>",
+          "tag": "avalanche",
+          "isArchived": false,
+          "altText": "Large blocks of avalanche debris on low angle slopes, too low angle to slide.",
+          "dateTaken": "2026-03-03T23:34:56.255Z"
+        },
+        {
+          "id": "a7c1ba2b-4997-4d81-a88f-2ebadef9c47f",
+          "url": "http://res.cloudinary.com/forecasts/image/upload/v1772490455/prod/parks/glacier/czhe9xc2vo36efri1hnb.jpg",
+          "width": 5000,
+          "height": 3746,
+          "credit": "Parks Canada",
+          "caption": "<p>Naturally triggered size 4 avalanche from Grizzly Mountain. Ran full path, across creek, and several dozen metres up the other side of the valley. Of note, the slide jumped the gully wall halfway down and logged some mature timber on the right side of the picture.</p><p>Frequent Flyer, the avalanche path to the left, did not produce a large avalanche during this last cycle. It should be a primary concern for anyone skiing up Connaught Creek in the next few days</p>",
+          "tag": "avalanche",
+          "isArchived": false,
+          "altText": "Naturally triggered size 4 avalanche off Grizzly Mountain",
+          "dateTaken": "2026-03-02T22:27:42.069Z"
+        }
+      ]
+    }
+  },
+  "resolved_from": {
+    "lat": 51.294,
+    "lon": -117.568
+  }
+}

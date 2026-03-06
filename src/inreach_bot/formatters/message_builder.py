@@ -1,44 +1,22 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-
-from ..types import AvalancheSummary, WeatherSummary
+from ..types import AvalancheSummary
 
 
-@dataclass(slots=True)
-class MessageBundle:
-    combined: str
-    weather_only: str
-    avalanche_only: str
+def build_base_message(avalanche: AvalancheSummary) -> str:
+    """Build the deterministic base message: date, danger, confidence, problems, weather."""
+    date_str = avalanche.details.get("date_issued", "")
+    danger = format_d_plus_1_numeric(avalanche)
+    conf = avalanche.details.get("confidence", "")
+    problems: list[dict] = avalanche.details.get("problems", [])
+    wx: list[dict] = avalanche.details.get("wx", [])
 
-
-PRIORITY_FIELDS = ["danger", "wind", "temp", "snow", "advice"]
-
-
-def build_messages(weather: WeatherSummary, avalanche: AvalancheSummary) -> MessageBundle:
-    weather_msg = (
-        f"WX [{weather.source_status}] {weather.headline} | "
-        f"Snow:{_fmt_num(weather.snow_total_cm, 'cm')} "
-        f"Temp:{_fmt_num(weather.temp_min_c, 'C')}/{_fmt_num(weather.temp_max_c, 'C')} "
-        f"Wind:{_fmt_num(weather.wind_ridge_kmh, 'km/h')} "
-        f"Freeze:{_fmt_num(weather.freezing_level_m, 'm')}"
-    ).strip()
-
-    danger_str = ", ".join(f"{k}:{v}" for k, v in avalanche.danger_ratings_by_elevation.items()) or "unknown"
-    avalanche_msg = (
-        f"AVL [{avalanche.source_status}] {avalanche.region_name} | "
-        f"Danger:{danger_str} "
-        f"P1:{avalanche.primary_problem or 'n/a'} "
-        f"P2:{avalanche.secondary_problem or 'n/a'} "
-        f"Advice:{(avalanche.travel_advice or 'n/a')[:180]}"
-    ).strip()
-
-    combined = f"{weather_msg} || {avalanche_msg}"
-    return MessageBundle(combined=combined, weather_only=weather_msg, avalanche_only=avalanche_msg)
-
-
-def build_avalanche_only_message(avalanche: AvalancheSummary) -> str:
-    return format_d_plus_1_numeric(avalanche)
+    base = f"{date_str} {danger} {conf}"
+    for p in problems:
+        base += f"|{p['type']}:{p['elevations']},{p['aspects']},{p['likelihood']},{p['size']}"
+    for w in wx:
+        base += f"|{w['label']}:{w['text']}"
+    return base
 
 
 def format_d_plus_1_numeric(avalanche: AvalancheSummary) -> str:
@@ -47,16 +25,54 @@ def format_d_plus_1_numeric(avalanche: AvalancheSummary) -> str:
     btl = avalanche.danger_ratings_by_elevation.get("btl")
     if not (alp and tln and btl):
         raise ValueError("Missing required D+1 ratings for alp/tln/btl")
-    return f"D+1 A/T/B: {alp}/{tln}/{btl}"
+    return f"{alp}/{tln}/{btl}"
 
 
-def choose_outbound_messages(bundle: MessageBundle, max_chars: int) -> list[str]:
-    if len(bundle.combined) <= max_chars:
-        return [bundle.combined]
+def choose_outbound_messages(
+    base: str, claude: str, max_chars: int, max_messages: int | None = None
+) -> list[str]:
+    """Chunk base + claude into messages of max_chars each.
 
-    weather_msg = _truncate(bundle.weather_only, max_chars)
-    avalanche_msg = _truncate(bundle.avalanche_only, max_chars)
-    return [weather_msg, avalanche_msg]
+    Message 1: base + as much of claude as fits (joined with ' | ').
+    Subsequent messages: remaining claude text, chunked to max_chars.
+    If max_messages is None (default), no cap is applied.
+    """
+    if not claude:
+        return [base[:max_chars]]
+
+    delimiter = " | "
+    combined = f"{base}{delimiter}{claude}"
+    if len(combined) <= max_chars:
+        return [combined]
+
+    budget = max_chars - len(base) - len(delimiter)
+    if budget > 0:
+        messages = [f"{base}{delimiter}{claude[:budget]}"]
+        remainder = claude[budget:]
+    else:
+        messages = [base[:max_chars]]
+        remainder = claude
+
+    while remainder:
+        if max_messages is not None and len(messages) >= max_messages:
+            break
+        messages.append(remainder[:max_chars])
+        remainder = remainder[max_chars:]
+
+    return messages
+
+
+def claude_summary_budget(base_message: str, max_chars: int, delimiter: str = " | ") -> int:
+    remaining = max_chars - len(base_message) - len(delimiter)
+    return max(0, remaining)
+
+
+def append_claude_summary(base_message: str, claude_summary: str, max_chars: int, delimiter: str = " | ") -> str:
+    summary = claude_summary.strip()
+    if not summary:
+        return _truncate(base_message, max_chars)
+    combined = f"{base_message}{delimiter}{summary}"
+    return _truncate(combined, max_chars)
 
 
 def _truncate(text: str, max_chars: int) -> str:
@@ -66,11 +82,3 @@ def _truncate(text: str, max_chars: int) -> str:
     if max_chars <= len(suffix):
         return text[:max_chars]
     return text[: max_chars - len(suffix)] + suffix
-
-
-def _fmt_num(value: float | None, unit: str) -> str:
-    if value is None:
-        return f"n/a{unit}"
-    if value.is_integer():
-        return f"{int(value)}{unit}"
-    return f"{value:.1f}{unit}"

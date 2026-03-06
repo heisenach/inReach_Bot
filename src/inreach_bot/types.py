@@ -22,7 +22,7 @@ class TripConfig:
     mapshare_url: str
     opensnow_auth_secret_name: str | None
     preview_only: bool = True
-    message_max_chars: int = 480
+    message_max_chars: int = 160
     send_tolerance_minutes: int = 20
 
 
@@ -46,7 +46,6 @@ class WeatherSummary:
 class AvalancheSummary:
     source_status: str
     fetch_timestamp: str
-    region_name: str
     danger_ratings_by_elevation: dict[str, str]
     primary_problem: str | None
     secondary_problem: str | None

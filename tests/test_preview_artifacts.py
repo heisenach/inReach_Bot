@@ -16,7 +16,6 @@ def test_write_preview_artifacts(tmp_path: Path):
     avalanche = AvalancheSummary(
         source_status="ok",
         fetch_timestamp="2026-02-28T00:00:00Z",
-        region_name="Rogers Pass",
         danger_ratings_by_elevation={"alp": "Considerable"},
         primary_problem=None,
         secondary_problem=None,
@@ -38,3 +37,5 @@ def test_write_preview_artifacts(tmp_path: Path):
     assert paths["opensnow_raw"].exists()
     assert paths["weather_verbose"].exists()
     assert paths["avalanche_verbose"].exists()
+    assert paths["claude_summary"].exists()
+    assert paths["claude_status"].exists()
