@@ -78,18 +78,32 @@ def build_send_decision(config: TripConfig, now_utc: datetime | None = None) -> 
     today_local = local_now.date()
     lat = f"{config.latitude:.4f}" if config.latitude is not None else "na"
     lon = f"{config.longitude:.4f}" if config.longitude is not None else "na"
-    key = f"{today_local.isoformat()}::{lat},{lon}"
 
     if config.preview_only:
-        return SendDecision(False, "preview_only=true", key)
-    if today_local < config.start_date or today_local > config.end_date:
-        return SendDecision(False, "outside date window", key)
+        return SendDecision(False, "preview_only=true", f"{today_local.isoformat()}::{lat},{lon}")
 
     target_hour, target_minute = [int(x) for x in config.send_time_gst.split(":")]
-    target = local_now.replace(hour=target_hour, minute=target_minute, second=0, microsecond=0)
-    delta_min = abs((local_now - target).total_seconds()) / 60.0
+    today_target = local_now.replace(hour=target_hour, minute=target_minute, second=0, microsecond=0)
+    seconds_from_today_target = (local_now - today_target).total_seconds()
 
-    if delta_min > 45:
+    # Determine the intended send date:
+    # - Within 45 min before (or any time after) today's target → today's send
+    # - More than 45 min before today's target → catch-up for yesterday's missed send
+    if seconds_from_today_target >= -45 * 60:
+        send_date = today_local
+        target = today_target
+    else:
+        send_date = today_local - timedelta(days=1)
+        target = today_target - timedelta(days=1)
+
+    key = f"{send_date.isoformat()}::{lat},{lon}"
+    seconds_from_target = (local_now - target).total_seconds()
+
+    if send_date < config.start_date or send_date > config.end_date:
+        return SendDecision(False, "outside date window", key)
+
+    # Allow from 45 min before target through 12 hours after (e.g. 5:15 PM → 6:00 AM)
+    if seconds_from_target < -45 * 60 or seconds_from_target > 12 * 3600:
         return SendDecision(False, "outside send tolerance window", key)
 
     already_sent = load_last_sent_key()
